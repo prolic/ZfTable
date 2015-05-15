@@ -195,7 +195,7 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
             $source = new Source\SqlSelect($source);
         } elseif ($source instanceof \Doctrine\ORM\QueryBuilder) {
             $source = new Source\DoctrineQueryBuilder($source);
-        } else if ($source instanceof \Doctrine\ODM\MongoDB\Query\Builder) {
+        } elseif ($source instanceof \Doctrine\ODM\MongoDB\Query\Builder) {
             $source = new Source\DoctrineODMMongoDBQueryBuilder($source);
         } elseif (is_array($source)) {
             $source = new Source\ArrayAdapter($source);
