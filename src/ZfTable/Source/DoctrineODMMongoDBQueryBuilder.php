@@ -58,12 +58,16 @@ class DoctrineODMMongoDBQueryBuilder extends AbstractSource
         if (!$column) {
             return;
         }
-
         $header = $this->getTable()->getHeader($column);
-        $tableAlias = ($header) ? $header->getTableAlias() : 'q';
 
-        if (false === strpos($tableAlias, '.')) {
-            $tableAlias = $tableAlias.'.'.$column;
+        if (!$header) {
+            return;
+        }
+
+        if ($header->getTableAlias()) {
+            $tableAlias = $header->getTableAlias();
+        } else {
+            $tableAlias = $header->getName();
         }
 
         $this->query->sort($tableAlias, $order);
