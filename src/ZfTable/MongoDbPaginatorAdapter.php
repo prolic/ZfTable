@@ -2,7 +2,7 @@
 
 namespace ZfTable;
 
-use MongoCursor;
+use Doctrine\MongoDB\Cursor;
 use Zend\Paginator\Adapter\AdapterInterface;
 
 /**
@@ -12,14 +12,14 @@ use Zend\Paginator\Adapter\AdapterInterface;
 final class MongoDbPaginatorAdapter implements AdapterInterface
 {
     /**
-     * @var MongoCursor
+     * @var Cursor
      */
     private $cursor;
 
     /**
-     * @param MongoCursor $cursor
+     * @param Cursor $cursor
      */
-    public function __construct(MongoCursor $cursor)
+    public function __construct(Cursor $cursor)
     {
         $this->cursor = $cursor;
     }
@@ -35,7 +35,7 @@ final class MongoDbPaginatorAdapter implements AdapterInterface
     /**
      * @param int $offset
      * @param int $itemCountPerPage
-     * @return MongoCursor
+     * @return Cursor
      */
     public function getItems($offset, $itemCountPerPage)
     {

@@ -54,7 +54,7 @@ class DoctrineMongoDBQueryBuilder extends AbstractSource
     {
         if (!$this->paginator) {
             $this->order();
-            $adapter = new MongoDbPaginatorAdapter($this->queryBuilder->getQuery()->execute()->getMongoCursor());
+            $adapter = new MongoDbPaginatorAdapter($this->queryBuilder->getQuery()->execute());
             $this->paginator = new Paginator($adapter);
             $this->initPaginator();
 
