@@ -2,7 +2,7 @@
 
 namespace ZfTable\Source;
 
-use Dimabay\App\MongoDb\PaginatorAdapter;
+use ZfTable\MongoDbPaginatorAdapter;
 use Doctrine\MongoDB\Query\Builder;
 use Zend\Paginator\Paginator;
 
@@ -54,7 +54,7 @@ class DoctrineMongoDBQueryBuilder extends AbstractSource
     {
         if (!$this->paginator) {
             $this->order();
-            $adapter = new PaginatorAdapter($this->queryBuilder->getQuery()->execute()->getMongoCursor());
+            $adapter = new MongoDbPaginatorAdapter($this->queryBuilder->getQuery()->execute()->getMongoCursor());
             $this->paginator = new Paginator($adapter);
             $this->initPaginator();
 
