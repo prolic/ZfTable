@@ -69,7 +69,7 @@ class DoctrineODMMongoDBQueryBuilder extends AbstractSource
         } else {
             $tableAlias = $header->getName();
         }
-
+        $order = strcasecmp('asc', $order) === 0 ? 1 : -1;
         $this->query->sort($tableAlias, $order);
     }
 
