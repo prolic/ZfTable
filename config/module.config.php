@@ -36,11 +36,7 @@ return array(
                 'css/bootstrap-2.2.2/bootstrap.min.css' => __DIR__ . '/../src/ZfTable/Public/css/bootstrap-2.2.2/bootstrap.min.css',
                 'css/bootstrap-2.2.2/bootstrap-responsive.min.css' => __DIR__ . '/../src/ZfTable/Public/css/bootstrap-2.2.2/bootstrap-responsive.min.css',
                 'css/bootstrap-2.2.2/DT_bootstrap.css' => __DIR__ . '/../src/ZfTable/Public/css/bootstrap-2.2.2/DT_bootstrap.css',
-                
             ),
-            
-            
-            
         ),
     ),
     
@@ -55,7 +51,15 @@ return array(
         ),
     ),
     'service_manager' => array(
-        
+        'invokables' => array(
+            'ZfTable\Decorator\DecoratorFactory' => 'ZfTable\Decorator\DecoratorFactory',
+        ),
+        'factories' => array(
+            'ZfTable\Decorator\DecoratorPluginManager' => 'ZfTable\Decorator\Service\DecoratorPluginManagerFactory',
+        ),
+         'abstract_factories' => [
+            'ZfTable\Table\TableAbstractServiceFactory',
+        ],
     ),
     
     // The following section is new and should be added to your file
@@ -92,7 +96,5 @@ return array(
             )
         )
     )
-
-    
 );
 

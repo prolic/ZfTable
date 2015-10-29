@@ -1,8 +1,8 @@
 <?php
+
 namespace ZfTable;
 
 use ZfTable\Example\Model\CustomerTable;
-
 
 class Module
 {
@@ -19,28 +19,25 @@ class Module
             ),
         );
     }
-    
+
     public function getServiceConfig()
     {
         return array(
             'factories' => array(
-                'ZfTable\Example\Model\CustomerTable' =>  function($sm) {
+                'ZfTable\Example\Model\CustomerTable' => function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table = new CustomerTable($dbAdapter);
                     return $table;
                 },
             ),
-           'aliases' => array(
+            'aliases' => array(
                 'zfdb_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
         );
-    }    
-    
+    }
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
-    
-
 }

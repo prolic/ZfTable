@@ -30,7 +30,6 @@ class DecoratorPluginManager extends AbstractPluginManager
         'celleditable' => '\ZfTable\Decorator\Cell\Editable',
         'cellcallable' => '\ZfTable\Decorator\Cell\CallableDecorator',
 
-
         'rowclass' => '\ZfTable\Decorator\Row\ClassDecorator',
         'rowvarattr' => '\ZfTable\Decorator\Row\VarAttr',
         'rowseparatable' => '\ZfTable\Decorator\Row\Separatable',
