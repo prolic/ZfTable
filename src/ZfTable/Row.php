@@ -3,28 +3,27 @@
  * ZfTable ( Module for Zend Framework 2)
  *
  * @copyright Copyright (c) 2013 Piotr Duda dudapiotrek@gmail.com
- * @license   MIT License
+ * @license   MIT License 
  */
 
 namespace ZfTable;
 
 use ZfTable\AbstractElement;
-use ZfTable\Decorator\DecoratorFactory;
 use ZfTable\Table\Exception;
 
 class Row extends AbstractElement
 {
     protected $class = array('zf-data-row');
-
+    
     /**
-     *
+     * 
      * @var array
      */
     protected $actualRow;
 
-
+    
     /**
-     *
+     * 
      * @param AbstractTable $table
      */
     public function __construct($table)
@@ -33,22 +32,29 @@ class Row extends AbstractElement
     }
 
     /**
-     *
+     * 
      * @param string $name
      * @param array $options
      * @return Decorator\Header\AbstractHeaderDecorator
      */
     public function addDecorator($name, $options = array())
     {
-        $decorator = DecoratorFactory::factoryRow($name, $options);
+        $decorator = $this->getDecoratorFactory()->factoryRow($name, $options);
         $this->attachDecorator($decorator);
         $decorator->setRow($this);
         return $decorator;
     }
+    
+    /**
+     * @return Decorator\DecoratorFactory
+     */
+    protected function getDecoratorFactory()
+    {
+        return $this->table->getDecoratorFactory();
+    }
 
     /**
-     * Get actual row
-     *
+     * Get actaul row 
      * @return array
      */
     public function getActualRow()
@@ -57,7 +63,7 @@ class Row extends AbstractElement
     }
 
     /**
-     *
+     * 
      * @param array $actualRow
      */
     public function setActualRow($actualRow)
@@ -65,7 +71,7 @@ class Row extends AbstractElement
         $this->actualRow = $actualRow;
     }
 
-
+    
     /**
      * Rendering all rows for table
      *
@@ -83,7 +89,7 @@ class Row extends AbstractElement
         } else {
             throw new Exception\InvalidArgumentException();
         }
-
+        
     }
 
     /**
@@ -97,7 +103,7 @@ class Row extends AbstractElement
         $data = $this->getTable()->getData();
         $headers = $this->getTable()->getHeaders();
         $render = array();
-
+        
         foreach ($data as $rowData) {
             $this->setActualRow($rowData);
             $temp = array();
@@ -105,14 +111,14 @@ class Row extends AbstractElement
                 if ($type == 'assc') {
                     $temp[$name] =  $this->getTable()->getHeader($name)->getCell()->render('array');
                 } else {
-                    $temp[] =  $this->getTable()->getHeader($name)->getCell()->render('array');
+                     $temp[] =  $this->getTable()->getHeader($name)->getCell()->render('array');
                 }
             }
             $render[] = $temp;
         }
         return $render;
     }
-
+    
     /**
      * rendering row as a html
      *
@@ -123,7 +129,7 @@ class Row extends AbstractElement
         $data = $this->getTable()->getData();
         $headers = $this->getTable()->getHeaders();
         $render = '';
-
+        
         foreach ($data as $rowData) {
             $this->setActualRow($rowData);
             $rowRender = '';

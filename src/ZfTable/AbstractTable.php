@@ -17,7 +17,10 @@ use ZfTable\Options\ModuleOptions;
 use ZfTable\Form\TableForm;
 use ZfTable\Form\TableFilter;
 
-abstract class AbstractTable extends AbstractElement implements TableInterface
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+abstract class AbstractTable extends AbstractElement implements TableInterface, ServiceLocatorAwareInterface
 {
 
     /**
@@ -75,7 +78,6 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
      */
     private $tableInit = false;
 
-
     /**
      * Default classes for table
      * @var array
@@ -88,13 +90,61 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
      */
     protected $config;
 
-
     /**
      * Options base ond ModuleOptions and config array
      * @var Options\ModuleOptions
      */
     protected $options = null;
+    
+    /**
+     * @var TableForm
+     */
+    protected $form;
+    
+    /**
+     *
+     * @var TableFilter
+     */
+    protected $filter;
 
+    /**
+     * @var ServiceLocatorInterface 
+     */
+    protected $serviceLocator;
+    
+    /**
+     * @var Decorator\DecoratorFactory 
+     */
+    protected $decoratorFactory;
+    
+    /**
+     * @return \Zend\ServiceManager\ServiceLocatorInterface 
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+    
+    /**
+     * @return Decorator\DecoratorFactory
+     */
+    public function getDecoratorFactory()
+    {
+        if (!$this->decoratorFactory) {
+            // check if serviceLocator was loaded if so, try to get the service
+            if ($this->getServiceLocator() && $this->getServiceLocator()->has('ZfTable\Decorator\DecoratorFactory')) {
+                $this->decoratorFactory = $this->getServiceLocator()->get('ZfTable\Decorator\DecoratorFactory');
+            } else {
+                $this->decoratorFactory = new Decorator\DecoratorFactory();
+            }
+        }
+        return $this->decoratorFactory;
+    }
 
     /**
      * Check if table has benn initializable
@@ -133,8 +183,6 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
     {
         return $this->paramAdapter;
     }
-
-
 
     /**
      *
@@ -296,7 +344,7 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
      */
     protected function initQuickSearch()
     {
-
+        
     }
 
     /**
@@ -305,7 +353,7 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
      */
     protected function initFilters($query)
     {
-
+        
     }
 
     /**
@@ -440,7 +488,10 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
      */
     public function getForm()
     {
-        return new TableForm(array_keys($this->headers));
+        if (!$this->form) {
+            $this->form = new TableForm(array_keys($this->headers));
+        }
+        return $this->form;
     }
 
     /**
@@ -449,6 +500,10 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
      */
     public function getFilter()
     {
-        return new TableFilter(array_keys($this->headers));
+        if (!$this->filter) {
+            $this->filter = new TableFilter(array_keys($this->headers));
+        }
+        return $this->filter;
     }
+    
 }
